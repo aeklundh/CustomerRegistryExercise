@@ -5,8 +5,92 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:albin_eklundh_registry"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Kundinmatare 5000 - Advanced (v0.0.0.0.5a)" Height="350" Width="525">
+    <Window.Resources>
+        <local:BoolToStringConverter x:Key="BooleanToStringConverter" FalseValue="Nej" TrueValue="Ja" />
+    </Window.Resources>
     <Grid>
-        
+        <TabControl>
+            <!---register new customers-->
+            <TabItem Header="Registrera ny kund">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <Label Content="Kontaktperson" />
+                        <TextBox Name="ContactPersonInput" />
+
+                        <Label Content="Företagsnamn" />
+                        <TextBox Name="CompanyNameInput" />
+
+                        <Label Content="Födelsedatum" />
+                        <DatePicker Name="DateOfBirthInput" />
+
+                        <Label Content="Adress" />
+                        <TextBox Name="AddressInput" />
+
+                        <Label Content="Postnummer" />
+                        <TextBox Name="PostalCodeInput" />
+
+                        <Label Content="Ort" />
+                        <TextBox Name="AreaInput" />
+
+                        <Label Content="Telefon" />
+                        <TextBox Name="PhoneInput" />
+
+                        <Label Content="E-post" />
+                        <TextBox Name="EmailInput" />
+
+                        <Label Content="Nyhetsbrev" />
+                        <CheckBox Name="WantsNewsLetterInput" />
+
+                        <Label Content="Anteckningar" />
+                        <TextBox Name="NotesInput" />
+
+                        <Button Content="Spara kund" Click="SaveCustomer" />
+                    </StackPanel>
+                    <Separator Margin="5" />
+                    <StackPanel Name="ValidationSummary" />
+                </Grid>
+            </TabItem>
+
+            <!---search the registry-->
+            <TabItem Header="Sök i registret">
+                <StackPanel Grid.Row="0">
+                    <ListView ItemsSource="{ Binding }">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Kontaktperson" DisplayMemberBinding="{ Binding ContactPerson }" />
+                                <GridViewColumn Header="Företagsnamn" DisplayMemberBinding="{ Binding CompanyName }" />
+                                <GridViewColumn Header="Företag" DisplayMemberBinding="{ Binding IsCompany, Converter={ StaticResource BooleanToStringConverter }}" />
+                                <GridViewColumn Header="Födelsedatum" DisplayMemberBinding="{ Binding DateOfBirth }" />
+                                <GridViewColumn Header="Adress" DisplayMemberBinding="{ Binding Address }" />
+                                <GridViewColumn Header="Postkod" DisplayMemberBinding="{ Binding PostalCode }" />
+                                <GridViewColumn Header="Ort" DisplayMemberBinding="{ Binding Area }" />
+                                <GridViewColumn Header="Telefon" DisplayMemberBinding="{ Binding Phone }" />
+                                <GridViewColumn Header="E-post" DisplayMemberBinding="{ Binding Email }" />
+                                <GridViewColumn Header="Nyhetsbrev" DisplayMemberBinding="{ Binding WantsNewsletter, Converter={ StaticResource BooleanToStringConverter }}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Click="GetCustomers" Content="Hämta alla" />
+                    <Separator Margin="5" />
+                    <StackPanel Grid.Row="1">
+                        <Label Content="Sök" />
+                        <TextBox Name="SearchInput" />
+                        <Button Click="Search" Content="Sök" />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
