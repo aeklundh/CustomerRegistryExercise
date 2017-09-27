@@ -1,4 +1,5 @@
-﻿using albin_eklundh_registry.Models;
+﻿using albin_eklundh_registry.Extensions;
+using albin_eklundh_registry.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -58,7 +59,7 @@ namespace albin_eklundh_registry.Repositories
             SqlCommand insertCustomer = new SqlCommand("INSERT INTO [Customers] VALUES (@contactPerson, @companyName, @dateOfBirth, @address, @area, @postalCode, @phone, @email, @wantsNewsletter, @notes)");
             insertCustomer.Parameters.Add("@contactPerson", SqlDbType.NVarChar).Value = customer.ContactPerson;
             insertCustomer.Parameters.Add("@companyName", SqlDbType.NVarChar).Value = customer.CompanyName;
-            insertCustomer.Parameters.Add("@dateOfBirth", SqlDbType.SmallDateTime).Value = customer.DateOfBirth;
+            insertCustomer.Parameters.Add("@dateOfBirth", SqlDbType.SmallDateTime).Value = customer.DateOfBirth ?? (object)DBNull.Value;
             insertCustomer.Parameters.Add("@address", SqlDbType.NVarChar).Value = customer.Address;
             insertCustomer.Parameters.Add("@area", SqlDbType.NVarChar).Value = customer.Area;
             insertCustomer.Parameters.Add("@postalCode", SqlDbType.Char).Value = customer.PostalCode;
@@ -90,7 +91,7 @@ namespace albin_eklundh_registry.Repositories
                         CustomerId = (int)reader["CustomerId"],
                         CompanyName = reader["CompanyName"].ToString(),
                         ContactPerson = (string)reader["ContactPerson"],
-                        DateOfBirth = (DateTime?)reader["DateOfBirth"],
+                        DateOfBirth = reader.GetNullableDateTime("DateOfBirth"),
                         Address = reader["Address"].ToString(),
                         Area = reader["Area"].ToString(),
                         PostalCode = reader["PostalCode"].ToString(),

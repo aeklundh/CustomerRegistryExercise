@@ -58,8 +58,8 @@
 
                         <Button Content="Spara kund" Click="SaveCustomer" />
                     </StackPanel>
-                    <Separator Margin="5" />
-                    <StackPanel Name="ValidationSummary" />
+                    <Separator Grid.Row="1" Margin="5" />
+                    <StackPanel Grid.Row="2" Name="ValidationSummary" />
                 </Grid>
             </TabItem>
 
