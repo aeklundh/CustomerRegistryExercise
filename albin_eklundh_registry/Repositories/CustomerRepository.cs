@@ -58,7 +58,7 @@ namespace albin_eklundh_registry.Repositories
         {
             SqlCommand insertCustomer = new SqlCommand("INSERT INTO [Customers] VALUES (@contactPerson, @companyName, @dateOfBirth, @address, @area, @postalCode, @phone, @email, @wantsNewsletter, @notes)");
             insertCustomer.Parameters.Add("@contactPerson", SqlDbType.NVarChar).Value = customer.ContactPerson;
-            insertCustomer.Parameters.Add("@companyName", SqlDbType.NVarChar).Value = customer.CompanyName;
+            insertCustomer.Parameters.Add("@companyName", SqlDbType.NVarChar).Value = customer.IsCompany ? customer.CompanyName : (object)DBNull.Value;
             insertCustomer.Parameters.Add("@dateOfBirth", SqlDbType.SmallDateTime).Value = customer.DateOfBirth ?? (object)DBNull.Value;
             insertCustomer.Parameters.Add("@address", SqlDbType.NVarChar).Value = customer.Address;
             insertCustomer.Parameters.Add("@area", SqlDbType.NVarChar).Value = customer.Area;
@@ -92,11 +92,11 @@ namespace albin_eklundh_registry.Repositories
                         CompanyName = reader["CompanyName"].ToString(),
                         ContactPerson = (string)reader["ContactPerson"],
                         DateOfBirth = reader.GetNullableDateTime("DateOfBirth"),
-                        Address = reader["Address"].ToString(),
-                        Area = reader["Area"].ToString(),
-                        PostalCode = reader["PostalCode"].ToString(),
+                        Address = (string)reader["Address"],
+                        Area = (string)reader["Area"],
+                        PostalCode = (string)reader["PostalCode"],
                         Phone = reader["Phone"].ToString(),
-                        Email = reader["Email"].ToString(),
+                        Email = (string)reader["Email"],
                         WantsNewsletter = (bool)reader["WantsNewsletter"],
                         Notes = reader["Notes"].ToString()
                     };
