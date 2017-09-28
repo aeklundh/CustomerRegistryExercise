@@ -25,7 +25,7 @@ namespace albin_eklundh_registry.Repositories
             List<Customer> customers = new List<Customer>();
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
-            using (SqlCommand getCustomers = new SqlCommand("SELECT TOP 100 * FROM [Customers] ORDER BY [CustomerId] DESCENDING", conn))
+            using (SqlCommand getCustomers = new SqlCommand("SELECT TOP 100 * FROM [Customers] ORDER BY [CustomerId] DESC", conn))
             {
                 conn.Open();
                 using (SqlDataReader reader = getCustomers.ExecuteReader())
