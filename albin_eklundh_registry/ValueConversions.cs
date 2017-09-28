@@ -3,6 +3,7 @@ using System.Windows.Data;
 
 namespace albin_eklundh_registry
 {
+    //base class to convert values usable in XAML
     public class BoolToValueConverter<T> : IValueConverter
     {
         public T FalseValue { get; set; }

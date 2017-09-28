@@ -34,6 +34,7 @@ namespace albin_eklundh_registry
             DataContext = _customers;
         }
 
+        //creates a customer object, validates and saves to DB if it's valid
         private void SaveCustomer(object sender, EventArgs e)
         {
             Customer customer = new Customer()
@@ -54,7 +55,8 @@ namespace albin_eklundh_registry
             if (Validate(customer))
             {
                 CustomerRepository.AddCustomer(customer);
-                _customers.Add(customer);
+                _customers.Clear();
+                CustomerRepository.GetRecentCustomers().ForEach(x => _customers.Add(x));
 
                 ClearTextBoxes(RegistryWindow);
             }
@@ -80,6 +82,7 @@ namespace albin_eklundh_registry
             CompanyNameInput.Text = String.Empty;
         }
 
+        //validates the current customer input using its data annotations and adds potential error messages to the view
         private bool Validate(Customer customer)
         {
             ValidationSummary.Children.Clear();
@@ -97,6 +100,7 @@ namespace albin_eklundh_registry
             return valid;
         }
 
+        //clears every textbox in the view
         private void ClearTextBoxes(Visual myMainWindow)
         {
             int childrenCount = VisualTreeHelper.GetChildrenCount(myMainWindow);

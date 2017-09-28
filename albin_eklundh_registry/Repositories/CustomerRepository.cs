@@ -20,6 +20,7 @@ namespace albin_eklundh_registry.Repositories
             _connectionString = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
         }
 
+        //gets the 100 latest customers
         public static List<Customer> GetRecentCustomers()
         {
             List<Customer> customers = new List<Customer>();
@@ -35,6 +36,7 @@ namespace albin_eklundh_registry.Repositories
             return customers;
         }
 
+        //searches for a customer by the Phone or Email columns
         public static List<Customer> SearchForCustomer(string searchKey)
         {
             List<Customer> customers = new List<Customer>();
@@ -78,6 +80,7 @@ namespace albin_eklundh_registry.Repositories
             }
         }
 
+        //creates a list of customers using a datareader that has selected all columns from Customers
         private static List<Customer> CreateListOfCustomers(this SqlDataReader reader)
         {
             List<Customer> retVal = new List<Customer>();
