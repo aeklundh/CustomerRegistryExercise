@@ -29,7 +29,7 @@ namespace albin_eklundh_registry
         public MainWindow()
         {
             InitializeComponent();
-            CustomerRepository.GetCustomers().ForEach(x => _customers.Add(x));
+            CustomerRepository.GetRecentCustomers().ForEach(x => _customers.Add(x));
 
             DataContext = _customers;
         }
@@ -38,6 +38,7 @@ namespace albin_eklundh_registry
         {
             Customer customer = new Customer()
             {
+                IsCompany = (bool)IsCompany.IsChecked,
                 ContactPerson = ContactPersonInput.Text,
                 CompanyName = CompanyNameInput.Text,
                 Address = AddressInput.Text,
@@ -54,13 +55,15 @@ namespace albin_eklundh_registry
             {
                 CustomerRepository.AddCustomer(customer);
                 _customers.Add(customer);
+
+                ClearTextBoxes(RegistryWindow);
             }
         }
 
-        private void GetCustomers(object sender, EventArgs e)
+        private void GetRecentCustomers(object sender, EventArgs e)
         {
             _customers.Clear();
-            CustomerRepository.GetCustomers().ForEach(x => _customers.Add(x));
+            CustomerRepository.GetRecentCustomers().ForEach(x => _customers.Add(x));
         }
 
         private void Search(object sender, EventArgs e)
@@ -70,6 +73,11 @@ namespace albin_eklundh_registry
                 _customers.Clear();
                 CustomerRepository.SearchForCustomer(SearchInput.Text).ForEach(x => _customers.Add(x));
             }
+        }
+
+        private void IsPrivate_Checked(object sender, RoutedEventArgs e)
+        {
+            CompanyNameInput.Text = String.Empty;
         }
 
         private bool Validate(Customer customer)
@@ -83,12 +91,25 @@ namespace albin_eklundh_registry
             if (!valid)
             {
                 foreach (var result in results)
-                {
-                    ValidationSummary.Children.Add(new Label() { Content = result });
-                }
+                    ValidationSummary.Children.Add(new TextBlock() { Text = $"*{ result.ErrorMessage }" });
             }
 
             return valid;
+        }
+
+        private void ClearTextBoxes(Visual myMainWindow)
+        {
+            int childrenCount = VisualTreeHelper.GetChildrenCount(myMainWindow);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                var visualChild = (Visual)VisualTreeHelper.GetChild(myMainWindow, i);
+                if (visualChild is TextBox)
+                {
+                    TextBox tb = (TextBox)visualChild;
+                    tb.Clear();
+                }
+                ClearTextBoxes(visualChild);
+            }
         }
     }
 }

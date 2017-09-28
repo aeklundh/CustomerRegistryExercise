@@ -20,12 +20,12 @@ namespace albin_eklundh_registry.Repositories
             _connectionString = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
         }
 
-        public static List<Customer> GetCustomers()
+        public static List<Customer> GetRecentCustomers()
         {
             List<Customer> customers = new List<Customer>();
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
-            using (SqlCommand getCustomers = new SqlCommand("SELECT * FROM [Customers]", conn))
+            using (SqlCommand getCustomers = new SqlCommand("SELECT TOP 100 * FROM [Customers] ORDER BY [CustomerId] DESCENDING", conn))
             {
                 conn.Open();
                 using (SqlDataReader reader = getCustomers.ExecuteReader())

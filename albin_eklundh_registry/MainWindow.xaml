@@ -5,67 +5,117 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:albin_eklundh_registry"
         mc:Ignorable="d"
-        Title="Kundinmatare 5000 - Advanced (v0.0.0.0.5a)" Height="350" Width="525">
+        Title="Kundinmatare 5000 - Advanced (v0.0.0.0.5a)" Height="380" Width="575"
+        Name="RegistryWindow">
     <Window.Resources>
         <local:BoolToStringConverter x:Key="BooleanToStringConverter" FalseValue="Nej" TrueValue="Ja" />
+
+        <Style TargetType="TextBox" x:Key="disableOnChecked">
+            <Style.Triggers>
+                <DataTrigger Binding="{ Binding IsChecked, ElementName=IsPrivate }" Value="True" >
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Width" Value="200" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Width" Value="100" />
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#e2a6fc" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+        </Style>
     </Window.Resources>
-    <Grid>
-        <TabControl>
+    <Grid Name="MainGrid">
+        <TabControl Background="#fce2a6">
             <!---register new customers-->
             <TabItem Header="Registrera ny kund">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <StackPanel>
+                            <Label Content="Kundtyp" />
+                            <RadioButton Content="Privat" GroupName="CustomerType" Name="IsPrivate" Checked="IsPrivate_Checked" />
+                            <RadioButton Content="Företag" GroupName="CustomerType" Name="IsCompany" IsChecked="True" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Kontaktperson" />
+                            <TextBox Name="ContactPersonInput" />
 
-                    <StackPanel Grid.Row="0" Grid.Column="0">
-                        <Label Content="Kontaktperson" />
-                        <TextBox Name="ContactPersonInput" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Företagsnamn" />
+                            <TextBox Name="CompanyNameInput" Style="{ StaticResource disableOnChecked }" Width="200" VerticalAlignment="Center" />
 
-                        <Label Content="Företagsnamn" />
-                        <TextBox Name="CompanyNameInput" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Födelsedatum" />
+                            <DatePicker Name="DateOfBirthInput" />
+                        </StackPanel>
 
-                        <Label Content="Födelsedatum" />
-                        <DatePicker Name="DateOfBirthInput" />
+                        <StackPanel>
+                            <Label Content="Adress" />
+                            <TextBox Name="AddressInput" />
+                        </StackPanel>
 
-                        <Label Content="Adress" />
-                        <TextBox Name="AddressInput" />
+                        <StackPanel>
+                            <Label Content="Postnummer" />
+                            <TextBox Name="PostalCodeInput" />
+                        </StackPanel>
 
-                        <Label Content="Postnummer" />
-                        <TextBox Name="PostalCodeInput" />
+                        <StackPanel>
+                            <Label Content="Ort" />
+                            <TextBox Name="AreaInput" />
+                        </StackPanel>
 
-                        <Label Content="Ort" />
-                        <TextBox Name="AreaInput" />
+                        <StackPanel>
+                            <Label Content="Telefon" />
+                            <TextBox Name="PhoneInput" />
+                        </StackPanel>
 
-                        <Label Content="Telefon" />
-                        <TextBox Name="PhoneInput" />
+                        <StackPanel>
+                            <Label Content="E-post" />
+                            <TextBox Name="EmailInput" />
+                        </StackPanel>
 
-                        <Label Content="E-post" />
-                        <TextBox Name="EmailInput" />
+                        <StackPanel>
+                            <Label Content="Nyhetsbrev" />
+                            <CheckBox Name="WantsNewsLetterInput" />
+                        </StackPanel>
 
-                        <Label Content="Nyhetsbrev" />
-                        <CheckBox Name="WantsNewsLetterInput" />
-
-                        <Label Content="Anteckningar" />
-                        <TextBox Name="NotesInput" />
-
-                        <Button Content="Spara kund" Click="SaveCustomer" />
+                        <StackPanel>
+                            <Label Content="Anteckningar" />
+                            <TextBox Name="NotesInput" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Button Content="Spara kund" Click="SaveCustomer" Margin="235,0,0,0" />
+                        </StackPanel>
                     </StackPanel>
-                    <Separator Grid.Row="1" Margin="5" />
-                    <StackPanel Grid.Row="2" Name="ValidationSummary" />
+                    <StackPanel Grid.Column="1" Name="ValidationSummary" Orientation="Vertical" />
                 </Grid>
             </TabItem>
 
             <!---search the registry-->
             <TabItem Header="Sök i registret">
-                <StackPanel Grid.Row="0">
+                <StackPanel Orientation="Vertical">
                     <ListView ItemsSource="{ Binding }">
                         <ListView.View>
                             <GridView>
@@ -82,10 +132,10 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button Click="GetCustomers" Content="Hämta alla" />
+                    <Button Click="GetRecentCustomers" Content="Hämta senaste" HorizontalAlignment="Left" Margin="5" Width="100" />
                     <Separator Margin="5" />
-                    <StackPanel Grid.Row="1">
-                        <Label Content="Sök" />
+                    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" Margin="5">
+                        <Label Content="Sök" HorizontalAlignment="Left" />
                         <TextBox Name="SearchInput" />
                         <Button Click="Search" Content="Sök" />
                     </StackPanel>
