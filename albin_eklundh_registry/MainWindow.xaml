@@ -41,7 +41,7 @@
             <Setter Property="TextWrapping" Value="WrapWithOverflow" />
         </Style>
     </Window.Resources>
-    <Grid Name="MainGrid">
+    <Grid>
         <TabControl Background="#fce2a6">
             <!---register new customers-->
             <TabItem Header="Registrera ny kund">
